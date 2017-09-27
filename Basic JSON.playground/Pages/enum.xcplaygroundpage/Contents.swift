@@ -3,7 +3,10 @@
  ****
  #  Использование протокола 'Codable' для перечислений 'enum'
  
- Для перечисления 'enum' необходимо указать тип вариантов, то есть "raw" value. Например, ниже представлено перечисление "Пол" 'Gender'в структуре 'Person", и тип его вариантов 'String'. Тип 'String' надо обязательно указать при подтверждении протокола 'Codable', и если этот тип реализует протокол 'Codable' (как в нашем случае с 'String') , то все будет в порядке. Это относится и к 'Int' и другим базовым типам.
+ Для перечисления 'enum' ([enum]) необходимо указать тип вариантов, то есть "raw" value. Например, ниже представлено перечисление "Пол" 'Gender'в структуре 'Person", и тип его вариантов 'String'. Тип 'String' надо обязательно указать при подтверждении протокола 'Codable', и если этот тип реализует протокол 'Codable' (как в нашем случае с 'String') , то все будет в порядке. Это относится и к 'Int' и другим базовым типам.
+ 
+ [enum]: https://littlebitesofcocoa.com/318-codable-enums  "Codable Enum"
+ 
  */
 import Foundation
 
@@ -25,11 +28,15 @@ let json = String(data: data, encoding: .utf8)!
 
 let decoder = JSONDecoder()
 let person = try! decoder.decode(Person.self, from: data)
-/*
-Но если у вас 'enum' с ассоциативными значениями как в случае с 'ContentKind', то вы должны взять на себя часть логики encode и decode.
- Во-первых, вам необходим свой собственный тип  'Swift Error' для "выбрасывания" ошибок, если что-то пойдет неправильно.
- Во-вторых, вам необходимо сообщить "ключи",  которые будут использоваться для encode и/или decode ваших данных. Для этого используется другое перечисление 'enum' 'CodingKeys', встроенное в протокол  'CodingKey'.
- В-третьих, вам необходимо реализовать две функции:
+/*:
+Но если у вас 'enum' с ассоциативными значениями^ как в случае с 'ContentKind', то вы должны взять на себя часть логики encode и decode.
+ 
+ #### Во-первых, вам необходим свой собственный тип  'Swift Error' для "выбрасывания" ошибок, если что-то пойдет неправильно.
+ 
+ #### Во-вторых, вам необходимо сообщить "ключи",  которые будут использоваться для encode и/или decode ваших данных. Для этого используется другое перечисление 'enum' 'CodingKeys', встроенное в протокол  'CodingKey'.
+
+ #### В-третьих, вам необходимо реализовать две функции:
+ 
          init(from decoder: Decoder) throws
          func encode(to encoder: Encoder) throws
 */
@@ -78,4 +85,3 @@ let dataContent = try! esJsonEncoder.encode(contentKind)
 let jsonContent = String(data: dataContent, encoding: .utf8)
 let content = try! JSONDecoder().decode(ContentKind.self, from: dataContent)
 type(of: content)
-//: [Next](@next)
